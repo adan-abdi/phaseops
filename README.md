@@ -5,6 +5,8 @@ It integrates a Rust CLI, a local web UI, and an in-browser HUD to track, augmen
 
 Built after 3,200 applications. Tuned by failure. Hardened for war.
 
+![PhaseOps Progress](https://img.shields.io/badge/Progress-14%25-brightgreen)
+
 ---
 
 ## 🧬 Operational Channels
@@ -172,4 +174,3 @@ All channels operate on shared local data, version-controlled resume templates, 
 > Built for operators. Forged in rejection.  
 > Phase by phase. Application by application.  
 > Until the market breaks—or you do.
-
