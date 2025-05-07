@@ -1,4 +1,5 @@
 mod cli;
+mod logger;
 mod git_backend;
 mod web_ui;
 mod hud;
