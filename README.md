@@ -1,167 +1,70 @@
 # PhaseOps: The Digital Career Exoskeleton
 
-**PhaseOps** is a modular, AI-augmented, local-first job search operating system.  
-It integrates a Rust CLI, a local web UI, and an in-browser HUD to track, augment, and accelerate your job hunt.
+**PhaseOps** is a modular, AI-augmented job operations toolkit designed to streamline and supercharge the job hunt.  
+It offers a local-first, telemetry-enabled control surface across CLI, web, and browser-embedded interfaces.
 
-![PhaseOps Progress](https://img.shields.io/badge/Progress-14%25-brightgreen)
-![Rust](https://img.shields.io/badge/Language-Rust-orange)
-![Platform](https://img.shields.io/badge/Platform-CLI%20%7C%20Web%20%7C%20BrowserExtension-blue)
+![Progress](https://img.shields.io/badge/Progress-14%25-brightgreen)
+![Language](https://img.shields.io/badge/Language-Rust-orange)
+![Platform](https://img.shields.io/badge/Platform-CLI%20%7C%20Web%20%7C%20Extension-blue)
+![Status](https://img.shields.io/badge/Status-In--Development-blue)
 ![Stars](https://img.shields.io/github/stars/adan-abdi/phaseops?style=social)
-![Status](https://img.shields.io/badge/Status-in--Development-blue)
 
 ---
 
-## 🧬 Operational Channels
+## 🧭 Project Vision
 
-| Channel           | Role                                          | Target UX                |
-|-------------------|-----------------------------------------------|--------------------------|
-| **CLI**           | Power-user control & automation               | Terminal-based operators |
-| **Web Portal**    | Local UI for resume gen, logging, dashboard   | Visual-first users       |
-| **Browser HUD**   | Overlay inside LinkedIn Jobs (Tauri/Extension)| Real-time field ops      |
+PhaseOps isn't a resume builder.  
+It's a **battle-tested system** for orchestrating, tracking, and evolving career operations—designed for developers who prefer **command over chaos**.
 
-All channels operate on shared local data, version-controlled resume templates, and LLM-assisted job targeting.
-
----
-
-## ⚙️ PhaseOps Pipeline Breakdown
+- CLI-first, built in Rust for speed and precision.
+- Modular architecture with local persistence and optional AI augmentation.
+- Secure, human-driven interactions across terminals, dashboards, and embedded HUDs.
 
 ---
 
-### 🔍 Phase 0: Intake
-**"What job are we targeting?"**
+## 🔌 Architecture
 
-- Input:
-  - CLI: Paste JD
-  - Web: JD input field
-  - Browser HUD: Detect from view + clipboard
-- Extract:
-  - Title, company, location, stack
-  - ATS keywords via LLM
-- Classify:
-  - Role type, effort level
-- Stored in: `logs/applications.csv`
+- **Language**: Rust (`clap`, `tokio`, `serde`, `git2`)
+- **UI**: Static HTML + Tailwind (web), Tauri (HUD)
+- **Data**: CSV, Git, optional SQLite
+- **AI Layer**: Pluggable OpenAI/Gemini LLM hooks
+- **PDF Generation**: Markdown → PDF pipeline
+- **Planned**: Local vector indexing and adaptive scoring
 
 ---
 
-### 🧠 Phase 1: Resume Generation
-**"Fire the right bullet for this target."**
+## 🔒 Operational Channels
 
-- Resume base selected based on stack/goals
-- LLM generates:
-  - Skills prose block
-  - ATS keyword sentence
-- Injected into:
-  - `resumes/templates/ats_optimized.md`
-- Exported:
-  - PDF saved to `/resumes/generated/`
-  - Copied to desktop
-  - Logged with version tag
+| Interface        | Purpose                                |
+|------------------|----------------------------------------|
+| **CLI**          | Core job automation & interaction flow |
+| **Web UI**       | Visual interface for logs and history  |
+| **Browser HUD**  | In-context overlay on job platforms    |
 
-**Run From:**
-- CLI: `phaseops generate-resume`
-- Web: Generate button
-- HUD: “Build & Load Resume” button
+All interfaces interoperate via shared local data and Git-backed logs.
 
 ---
 
-### 📤 Phase 2: Application Logging
-**"We don't send blind bullets—we track them all."**
+## 🧠 What It's *Not*
 
-- Trigger: Confirm applied via CLI, web, or HUD
-- Prompt: Resume version used, effort, method
-- Auto-log:
-  - Company, title, resume, date, source
-- Save to: `logs/applications.csv`
-- Auto-commit: `git snapshot` of log + resume
+- Not a SaaS
+- Not click-to-apply spamware
+- Not resume fluff or template generator
+
+PhaseOps is built for people who **track their own telemetry**, manage their job ops like Git branches, and want complete control over how they adapt in a volatile hiring market.
 
 ---
 
-### 📥 Phase 3: Feedback Ingestion
-**"Did we get hit back?"**
+## 📦 Status
 
-- Input sources:
-  - Email (pasted content)
-  - LinkedIn (“Viewed,” “Downloaded,” “Rejected”)
-- Ingestion point:
-  - CLI: `phaseops update-status`
-  - Web: status dropdown
-  - HUD: LinkedIn status buttons
-- Status updated in log
-- Optional: LLM summarize rejection
+This repo contains the core CLI scaffold and early HUD experiments.  
+More modules will be released incrementally.
 
 ---
 
-### 🧊 Phase 4: Cold Outreach
-**"When Easy Apply is dead, we go direct."**
+## 🛡️ Legal
 
-- Input: cold DM/email form
-- Track:
-  - Contact, company, channel, message, follow-up
-- Suggest:
-  - Follow-up time
-  - Message templates (LLM)
-- Stored in: `logs/outreach.json`
-- Feedback loop if response arrives
-
----
-
-### 📊 Phase 5: Review & Analytics Dashboard
-**"Adapt. Iterate. Hit harder."**
-
-- Dashboard hosted on `localhost:PORT`
-- Features:
-  - Searchable, filterable job app table
-  - Application heatmaps & response graphs
-  - Cold outreach pipeline view
-- View from:
-  - Browser
-  - Embedded HUD panel
-  - CLI export (e.g., CSV to Markdown or PDF)
-
----
-
-### 🤖 Phase 6: Feedback Loop + RAG (Future)
-**"The exosuit learns."**
-
-- Store:
-  - JD → Resume → Outcome chains
-  - Outreach → Response chains
-- Embed all into local vector DB
-- LLM + RAG system:
-  - Recommend resume versions
-  - Suggest effort level
-  - Reject similar jobs based on history
-  - Auto-fill resume with context-aware skill blocks
-
----
-
-## 🛠️ Tech Stack
-
-| Layer              | Tech                               |
-|--------------------|------------------------------------|
-| Core Lang          | Rust (`clap`, `tokio`, `serde`)    |
-| Web Server         | `axum`, static HTML + Tailwind     |
-| Resume Generator   | Markdown → PDF (`printpdf`, `tectonic`) |
-| AI Layer           | OpenAI / Gemini via `reqwest`      |
-| Data Storage       | CSV + Git / SQLite (TBD)           |
-| Vector DB (Future) | `Qdrant`, `Weaviate`, or local Emb |
-| Browser HUD        | Tauri App w/ WebView or Chrome Ext |
-| Git Ops            | `git2`, auto-commits of logs + PDFs|
-
----
-
-## 🛡️ Browser HUD (Safe Mode)
-
-- Loads `https://linkedin.com/jobs` inside Tauri or via Chrome Extension
-- Displays PhaseOps overlay:
-  - Resume selector
-  - JD parser
-  - Effort class tagger
-  - Logging confirm button
-- **No DOM automation**
-- **No click simulation**
-- **All human-initiated**
-- **Fully compliant, invisible to LinkedIn's automation detectors**
+All code is licensed under the [Business Source License 1.1](LICENSE.md).  
 
 ---
 
@@ -169,4 +72,3 @@ All channels operate on shared local data, version-controlled resume templates, 
 
 > PhaseOps is a modular career control suite.  
 > You operate. It tracks. It adapts. You evolve.  
-
